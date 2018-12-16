@@ -42,6 +42,7 @@ public class Slave implements ProcessingUnit {
     private Loader loader = new Loader();
     private ConcurrentLinkedQueue<Entity> entities;
     private DisplayManager displayManager;
+    private int frameIndex = 0;
 
     public Slave() {
         slaveId = generateSlaveId();
@@ -131,7 +132,7 @@ public class Slave implements ProcessingUnit {
 
     private void sendFrameToMaster(FrameObject frameObject) {
         try {
-            String frameObjectName = "frame#" + slaveId;
+            String frameObjectName = "frame#" + frameIndex++ + "#" + slaveId;
             log.info("Sending frame {} to master.", frameObjectName);
             byte[] bytes = Utils.compress(objectMapper.writeValueAsString(frameObject));
             s3Wrapper.uploadBytes(PROCESSED_BUCKET, frameObjectName, bytes);
@@ -207,10 +208,10 @@ public class Slave implements ProcessingUnit {
     }
 
     private static String generateSlaveId() {
-        return UUID.randomUUID().toString().replace("-", "_");
+        return UUID.randomUUID().toString();
     }
 
     private String generateSlaveQueue(String slaveId) {
-        return "slave_" + slaveId;
+        return "slave-" + slaveId;
     }
 }

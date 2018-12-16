@@ -220,6 +220,7 @@ public class Master implements ProcessingUnit {
             slaves.values().parallelStream().forEach(slave -> {
                 List<Message> messageList = slave.getSqsWrapper().getMessages(1,1);
                 if (!messageList.isEmpty()) {
+                    log.info("Received reply from {}", slave.getUuid());
                     Message message = messageList.get(0);
                     String messageType = message.getMessageAttributes().get(MessageAttribute.TYPE.name()).getStringValue();
                     if (messageType.equals(MessageType.NOTIFY_UPLOAD.name())) {
