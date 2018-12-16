@@ -1,0 +1,15 @@
+package utils;
+
+public enum AppProperty {
+    AWS_ID,
+    AWS_SECRET_KEY,
+    AWS_REGION,
+
+    QUEUE_PREFIX,
+    INPUT_OBJECT_BUCKET,
+    TEXTURES_BUCKET,
+    PROCESSED_OBJECT_BUCKET,
+
+    DISPLAY_WIDTH,
+    DISPLAY_HEIGHT
+}
